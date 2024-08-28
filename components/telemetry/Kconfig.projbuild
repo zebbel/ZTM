@@ -1,0 +1,47 @@
+menu "UART0 Configuration"
+
+    config UART0_TX
+        int "uart0 tx pin"
+        default 43
+        help
+            GPIO number for UART0 tx.
+
+    config UART0_RX
+        int "uart0 rx pin"
+        default 44
+        help
+            GPIO number for UART0 rx.
+
+endmenu
+
+menu "UART1 Configuration"
+
+    config UART1_TX
+        int "uart1 tx pin"
+        default 13
+        help
+            GPIO number for UART1 tx.
+
+    config UART1_RX
+        int "uart1 rx pin"
+        default 12
+        help
+            GPIO number for UART1 rx.
+
+endmenu
+
+menu "UART2 Configuration"
+
+    config UART2_TX
+        int "uart2tx pin"
+        default 11
+        help
+            GPIO number for UART2 tx.
+
+    config UART2_RX
+        int "uart2 rx pin"
+        default 10
+        help
+            GPIO number for UART2 rx.
+
+endmenu

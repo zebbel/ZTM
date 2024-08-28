@@ -1,0 +1,8 @@
+dependencies:
+
+  idf:
+    version: '>=4.4'
+
+    
+description: telemetry
+version: 1.0.0

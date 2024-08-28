@@ -1,0 +1,271 @@
+ohne angeschlossenem sensor:
+
+00 - 01 = start sequenz
+02 - 08	= chanel data
+09		= checksum
+
+00	01	02	03	04	05	06	07	08	09
+h00 h0A h07 h00 hC0 hFF h4F h83 hC1 hC3
+
+
+125us pause
+
+00 - 19 = ???
+20		= checksum
+
+00	01	02	03	04	05	06	07	08	09	10	11	12	13	14	15	16	17	18	19	20
+h05 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h7D
+
+
+###########################################################################################################
+
+
+mit angeschlossenem Temperatur Sensor (sensor ID = 7)
+
+00 - 01 = start sequenz
+02	 - 08	= chanel data
+09		= checksum
+
+00	01	02	03	04	05	06	07	08	09
+h00 h0A h07 h00 hC0 hFF h4E h83 hC1 h60
+
+
+
+
+125us pause
+
+00 - 19 = ???
+20		= checksum
+
+00	01	02	03	04	05	06	07	08	09	10	11	12	13	14	15	16	17	18	19	20
+h09 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 hA9
+
+
+
+120us pause
+
+daten von Temperatur Sensor
+
+00		= fix
+01 - 02 = Temperatur
+03 - 19 = immer h00
+20		= checksum
+
+00	01	02	03	04	05	06	07	08	09	10	11	12	13	14	15	16	17	18	19	20
+h0A hB5 h02 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00	h96
+
+
+
+############################################################################################################
+
+während dem anschliesen vom Sensor
+
+Empfänger sendet immer channel data
+
+Empfänger sendet immer wenn kein sensor angeschlossen:
+h05 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h7D
+
+dann kommt Nachricht von Sensor
+h06 h01 h02 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 hF3
+
+
+nächster zyklus wird von Empfänger gesendet:
+h09 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 hA9
+
+Sensor antwortet bis er daten liefert:
+h0A h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00	h9C
+
+
+
+
+
+
+
+
+############################################################################################################
+
+Hobbywing Xerun axe R2 data protocol
+Sensor ID = 7
+
+00		= fix
+01		= voltage low byte 						100 decimal = 10,0V
+02		= voltage high byte
+03 		= current low byte						100 decimal = 10,0A
+04		= current high byte
+05		= rmp low byte							100 decimal = 1000U/min
+06		= rpm high byte
+07 		= throttle								100 decimal = 100%
+08		= power low byte						100 decimal = 100mAh
+09		= power high byte
+10		= ESC temp								100 decimal = 100°C
+11		= motor temp							100 decimal = 100°C
+12		= state 								bit1 = th not zero, bit2 = over temp, bit3 = stall, bit4 = low voltage, bit5 = over current, bit6 = throttle lost, msb winns, if 0x00, bit0 or bit7 ist set state = normal
+13		= ??? (immer 0xFF) 						doesn´t change anything when set to other value
+14		= ??? (immer 0xFF) 						doesn´t change anything when set to other value
+15		= ??? (immer 0x03) 						breaks telemetry when set to other value
+16		= ??? (immer 0x01) 						breaks telemetry when set to other value
+17		= ??? (immer 0x00) 						doesn´t change anything when set to other value
+18		= ??? (immer 0x00) 						doesn´t change anything when set to other value
+19		= ??? (immer 0x00) 						doesn´t change anything when set to other value
+20		= checksum
+
+00	01	02	03	04	05	06	07	08	09	10	11	12	13	14	15	16	17	18	19	20
+h0A h71 h00 h02 h00 h00 h00 h00 h43 h00 h25 h24 h00 hFF hFF h03 h01 h00 h00 h00 hF0
+
+
+
+############################################################################################################
+
+Hobbywing Xerun exe R2 startup
+
+receiver sendet ein paar mal:
+h01 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h31
+
+dann sendet er fortlaufend:
+h05 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h7D
+
+irgendwann sendet receiver immernoch:
+h05 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h7D
+esc antwortet mit:
+h06 hF8 h10 h03 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 hA3
+
+1,1346769
+was ist das???? wird an stelle von servo werten geschickt...
+Es ist wichtig das danach byte 3 von 0x03 auf 0x00 getzt wird in esc antwort packet!!!!
+00	01	02	03	04	05	06	07	08	09	10	11	12	13	14	15	16	17	18	19	20	21	22	23
+h04 h18 h07 h9C h73 h0E h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h93
+
+reiceiver sendet nach komischen packet
+h05 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h7D
+
+esc antwortet mit:
+h06 hF8 h10 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h74
+
+dann sendet empfänger anstelle von normaler servo nachricht, warum ist erstes byte plötzlich 0x08? falscher empfang von logic analizer???
+h08 h0A h07 h01 h18 h80 h01 h18 h80 hE8
+
+receiver sendet
+h09 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 hA9
+
+und esc antwortet mit:
+h0A h00 h00 h00 h00 h00 h00 h00 h43 h00 h00 h00 h00 hFF hFF h03 h01 h00 h00 h00 h97
+
+ab sofort wieder normale servo packete
+h00 h0A h07 h00 hC0 hFF h4F h83 hC1 hC3
+
+receiver sendet aber wieder
+h05 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h7D
+
+esc antwortet mit:
+h06 hF8 h10 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h74
+
+receiver sendet
+h09 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 hA9
+
+und esc antwortet mit:
+h0A h00 h00 h00 h00 h00 h00 h00 h43 h00 h00 h00 h00 hFF hFF h03 h01 h00 h00 h00 h97
+
+
+irgendwann antwortet es nicht mehr auf die anfrage von receiver
+
+nach einigen erfolglosen versuchen sendet receiver wieder
+h05 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h7D
+
+esc antwortet aber nicht
+
+receiver sendet weiter 
+h05 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h7D
+
+irgendwann antwortet esc wieder mit
+h06 hF8 h10 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h74
+
+receiver sendet
+h09 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 hA9
+
+esc anwortet mit 
+h0A h6E h00 h00 h00 h00 h00 h00 h43 h00 h00 h00 h00 hFF hFF h03 h01 h00 h00 h00 h77
+
+ab hier scheint der esc so langsam mit richtigen daten zu antworten
+
+
+############################################################################################################
+
+bei aufrufen von ibus2 seutp xerun axe r2, egal ob aus hauptmenü oder bei verlassen von untermenüs (servos setup, data sense, channel)
+
+receiver sendet:
+h0D h34 h12 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 hBE
+
+esc antwortet:
+h0E h34 h12 h10 h01 h20 h02 h60 h87 h20 h64 h50 h71 h00 h00 h00 h00 h00 h00 h00 h4B
+
+danach geht die normale kommunikation weiter
+
+
+############################################################################################################
+
+update esc parameters
+
+receiver sendet:
+h11 h34 h12 h10 h01 h20 h02 h60 h87 h20 h64 h50 h71 h00 h00 h00 h00 h00 h00 h00 hBF
+
+esc antwortet:
+h12 h34 h12 h01 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 hE4
+
+############################################################################################################
+
+verlassen von parameter settings
+
+receiver sendet
+h0D h36 h12 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h31
+esc antwortet
+h0E h36 h12 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h04
+
+############################################################################################################
+
+bei ändern von channel in channel settings
+
+bei throttle sendet receiver:
+h11 h34 h12 h10 h01 h20 h02 h60 h87 h20 h64 h50 h71 h00 h00 h00 h00 h00 h00 h00 hBF
+esc antwortet:
+h12 h34 h12 h01 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 hE4
+
+bei ch3 sendet receiver:
+h11 h34 h12 h10 h02 h20 h02 h60 h87 h20 h64 h50 h71 h00 h00 h00 h00 h00 h00 h00 h7C
+esc antwortet:
+h12 h34 h12 h01 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 hE4
+
+byte 4 von receiver packet legt channel fest:
+steering = 0x00, throttle = 0x01, ch3 = 0x02, ch4 = 0x03 .....
+ 
+############################################################################################################
+
+verlassen von channel settings
+
+receiver sendet
+h0D h36 h12 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h31
+esc antwortet
+h0E h36 h12 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h00 h04
+
+
+
+
+
+
+############################################################################################################
+//uint8_t sendFrame[] = {0x06, 0x01, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // temperature
+//uint8_t sendFrame[] = {0x06, 0x02, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // motor speed
+//uint8_t sendFrame[] = {0x06, 0x03, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // external voltage
+//uint8_t sendFrame[] = {0x06, 0x05, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // bvd voltage
+//uint8_t sendFrame[] = {0x06, 0x10, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // xerun axe
+//uint8_t sendFrame[] = {0x06, 0x11, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // FXS260/380
+//uint8_t sendFrame[] = {0x06, 0x12, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // power hd servo
+//uint8_t sendFrame[] = {0x06, 0x40, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // gps
+//uint8_t sendFrame[] = {0x06, 0x41, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // air pressure
+//uint8_t sendFrame[] = {0x06, 0x43, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // current and voltage
+//uint8_t sendFrame[] = {0x06, 0x80, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // tx voltage
+//uint8_t sendFrame[] = {0x06, 0xE6, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // pwm converter voltage
+//uint8_t sendFrame[] = {0x06, 0xF7, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // hub voltage
+//uint8_t sendFrame[] = {0x06, 0xF8, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // ??? alle externen Ibus2 geräte tauchen auf....
+//uint8_t sendFrame[] = {0x06, 0xFA, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // SNR
+//uint8_t sendFrame[] = {0x06, 0xFB, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // nois
+//uint8_t sendFrame[] = {0x06, 0xFE, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};       // signal strength

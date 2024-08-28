@@ -1,0 +1,24 @@
+idf_component_register(
+    SRCS
+        "telemetry.cpp"
+        "sensor/sensor.cpp"
+        "iBus2/init.cpp"
+        "iBus2/callback.cpp"
+        "iBus2/frameHandler.cpp"
+        "iBus2/sensorHandler.cpp"
+        "iBus2/config.cpp"
+        "sBus/sBus.cpp"
+        "SRXL2/SRXL2.cpp"
+        "Hobbywing/Hobbywing.cpp"
+    INCLUDE_DIRS
+        "."
+        "defines"
+        "sensor/header"
+        "iBus2/header"
+        "sBus/header"
+        "SRXL2/header"
+        "Hobbywing/header"
+    REQUIRES
+        "nvs_flash"
+        "driver"
+)
